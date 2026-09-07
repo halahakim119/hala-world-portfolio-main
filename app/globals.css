@@ -1,0 +1,352 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0b1f26;
+  --paper: #f2e9dc;
+  --sky-top: #123247;
+  --coral: #f4a261;
+  --teal: #4a9dae;
+  --orange: #e8622c;
+  --gold: #d9a441;
+  --rose: #c9667b;
+
+  --font-display: Fraunces, "Iowan Old Style", Georgia, ui-serif, serif;
+  --font-body: Inter, "SF Pro Text", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--sky-top);
+  color: var(--paper);
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------- world */
+
+.world {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.world canvas {
+  outline: none;
+}
+
+/* ------------------------------------------------------------------ hud */
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  font-family: var(--font-body);
+}
+
+.hud__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.hud__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  color: var(--paper);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+.hud__brand-mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--orange);
+  box-shadow: 0 0 10px var(--orange);
+}
+
+.hud__link {
+  pointer-events: auto;
+  background: rgba(11, 31, 38, 0.55);
+  border: 1px solid rgba(242, 233, 220, 0.35);
+  color: var(--paper);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+.hud__link:hover {
+  border-color: var(--orange);
+}
+
+.hud__hint {
+  align-self: center;
+  pointer-events: none;
+  background: rgba(11, 31, 38, 0.55);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  backdrop-filter: blur(6px);
+}
+
+.hud__hint kbd {
+  display: inline-block;
+  min-width: 1.4em;
+  text-align: center;
+  margin: 0 0.1em;
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: rgba(242, 233, 220, 0.15);
+  border: 1px solid rgba(242, 233, 220, 0.3);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+}
+
+/* -------------------------------------------------------------- minimap */
+
+.minimap {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  background: rgba(11, 31, 38, 0.55);
+  border: 1px solid rgba(242, 233, 220, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+.minimap__dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  opacity: 0.75;
+}
+
+.minimap__dot--active {
+  opacity: 1;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.minimap__rover {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--paper);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 6px rgba(242, 233, 220, 0.9);
+}
+
+/* --------------------------------------------------------------- d-pad */
+
+.dpad {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.dpad__row {
+  display: flex;
+  gap: 6px;
+}
+
+.dpad__btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(11, 31, 38, 0.6);
+  border: 1px solid rgba(242, 233, 220, 0.35);
+  color: var(--paper);
+  font-size: 1.1rem;
+  touch-action: none;
+  user-select: none;
+}
+
+.dpad__btn:active {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+/* ---------------------------------------------------------- zone panel */
+
+.zone-panel {
+  position: absolute;
+  left: 50%;
+  bottom: -220px;
+  transform: translateX(-50%);
+  width: min(420px, calc(100vw - 40px));
+  transition: bottom 0.35s ease;
+  pointer-events: none;
+}
+
+.zone-panel--open {
+  bottom: 20px;
+  pointer-events: auto;
+}
+
+.zone-panel__inner {
+  background: rgba(11, 31, 38, 0.82);
+  border: 1px solid;
+  border-radius: 16px;
+  padding: 1.1rem 1.3rem;
+  backdrop-filter: blur(10px);
+}
+
+.zone-panel__inner h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin: 0.1rem 0 0.6rem;
+}
+
+.zone-panel__eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.zone-panel__inner ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.zone-panel__hint {
+  margin: 0.7rem 0 0;
+  font-size: 0.75rem;
+  opacity: 0.65;
+}
+
+/* -------------------------------------------------------------- signage */
+
+.zone-tag {
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid;
+  background: rgba(11, 31, 38, 0.65);
+  color: var(--paper);
+  font-size: 0.78rem;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+.zone-tag--active {
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------- simple view */
+
+.simple {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.simple__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(242, 233, 220, 0.2);
+  padding-bottom: 1.5rem;
+}
+
+.simple__eyebrow {
+  margin: 0 0 0.3rem;
+  font-size: 0.85rem;
+  color: var(--coral);
+}
+
+.simple__header h1 {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  margin: 0;
+}
+
+.simple__title {
+  margin: 0.3rem 0 0;
+  opacity: 0.8;
+}
+
+.simple__cta {
+  background: var(--orange);
+  color: var(--ink);
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.simple__intro {
+  max-width: 60ch;
+  line-height: 1.6;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.simple__sections {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.simple__section {
+  border-left: 3px solid;
+  padding: 0.2rem 0 0.2rem 1rem;
+}
+
+.simple__tagline {
+  margin: 0 0 0.2rem;
+  font-size: 0.85rem;
+}
+
+.simple__section h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem;
+}
+
+.simple__section ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.6;
+}
